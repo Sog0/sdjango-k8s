@@ -1,0 +1,17 @@
+containerPort: 8080
+replicaCount: 2
+
+image:
+  repo: 807906458847.dkr.ecr.us-east-1.amazonaws.com/sample-django
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+autoscaling:
+  enabled: true
+  min: 2
+  max: 2
+  targetCPU: 80

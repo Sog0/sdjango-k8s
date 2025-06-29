@@ -1,0 +1,6 @@
+releases:
+  - name: django-app
+    namespace: default
+    chart: ../helm_chart
+    values:
+      - ../helm_chart/values.yaml

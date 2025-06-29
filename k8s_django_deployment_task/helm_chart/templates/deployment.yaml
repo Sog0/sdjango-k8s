@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metdata:
+  name: {{ include "project.name" .}}
+  labels:
+    app: {{ include "project.name" .}}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLables:
+      app: {{ include "project.name" .}}
+  template:
+    metadata:
+      labels: {{ include "project.name" .}}
+    spec:
+      containers:
+      - name: {{ include "project.name" .}}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.containerPort }}  
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: configmap
+                key: db-url
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: secret-key
+                key: key
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.service.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.service.port }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
