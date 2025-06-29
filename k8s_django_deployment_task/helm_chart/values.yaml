@@ -15,3 +15,8 @@ autoscaling:
   min: 2
   max: 2
   targetCPU: 80
+
+  ingress:
+  enabled: true
+  host: artfahhubffzg87j1qzmwrbjb8imderiqc2.online
+  certificateArn: arn:aws:acm:us-east-1:807906458847:certificate/ca544300-b4e1-4f44-954b-68f4263044c9

@@ -1,34 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
-metdata:
+metadata:
   name: {{ include "project.name" .}}
   labels:
     app: {{ include "project.name" .}}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
-    matchLables:
+    matchLabels:
       app: {{ include "project.name" .}}
   template:
     metadata:
-      labels: {{ include "project.name" .}}
+      labels: 
+        app: {{ include "project.name" .}}
     spec:
       containers:
       - name: {{ include "project.name" .}}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: {{ .Values.containerPort }}  
         env:
           - name: DATABASE_URL
             valueFrom:
               secretKeyRef:
-                name: configmap
+                name: {{ include "project.name" .}}-secret
                 key: db-url
-          - name: SECRET_KEY
+          - name: DJANGO_SECRET_KEY
             valueFrom:
               secretKeyRef:
-                name: secret-key
-                key: key
+                name: {{ include "project.name" .}}-secret
+                key: password
+          - name: DJANGO_ALLOWED_HOSTS
+            valueFrom:
+              configMapRef:
+                name: config
+                key: allowed_hosts
+          - name: DEBUG
+            valueFrom:
+              configMapRef:
+                name: config
+                key: debug
         readinessProbe:
           httpGet:
             path: /
