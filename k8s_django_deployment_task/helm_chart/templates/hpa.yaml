@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ inclunde "project.name ."}}
+  name: {{ include "project.name" . }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ inclunde "project.name ." }}
+    name: {{ include "project.name" . }}
   minReplicas: {{ .Values.autoscaling.min }}
   maxReplicas: {{ .Values.autoscaling.max }}
   metrics:
