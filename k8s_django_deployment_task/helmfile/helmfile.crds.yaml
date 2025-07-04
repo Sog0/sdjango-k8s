@@ -1,6 +1,6 @@
 releases:
   - name: cert-manager
     namespace: cert-manager
-    chart: ../helm_chart/charts/cert-manager-v1.18.2.tgz
+    chart: ../charts/cert-manager-v1.13.1.tgz
     values:
       - installCRDs: true
