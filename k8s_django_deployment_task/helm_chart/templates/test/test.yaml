@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "project.name" . }}-test-connection
+  namespace: {{ include "project.name" .}}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl
+      command: ["curl", "-sf", "http://django-app-service:80"]
+  restartPolicy: Never

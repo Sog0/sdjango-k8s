@@ -1,6 +1,10 @@
-releases:
+releases:      
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    chart: ../helm_chart/charts/ingress-nginx-4.12.3.tgz
+    
   - name: django-app
-    namespace: default
+    namespace: django-app
     chart: ../helm_chart
     values:
       - ../helm_chart/values.yaml

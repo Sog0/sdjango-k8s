@@ -2,7 +2,7 @@ containerPort: 8000
 replicaCount: 2
 
 image:
-  repo: 807906458847.dkr.ecr.us-east-1.amazonaws.com/sample-django
+  repo: 807906458847.dkr.ecr.us-east-1.amazonaws.com/django-app
   tag: "latest"
   pullPolicy: IfNotPresent
 

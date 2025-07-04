@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "project.name" .}}
+  namespace: {{ include "project.name" .}}
   labels:
     app: {{ include "project.name" .}}
 spec:
@@ -18,7 +19,8 @@ spec:
       - name: {{ include "project.name" .}}
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
         ports:
-        - containerPort: {{ .Values.containerPort }}  
+        - containerPort: {{ .Values.containerPort }} 
+
         env:
           - name: DATABASE_URL
             valueFrom:
@@ -40,15 +42,23 @@ spec:
               configMapKeyRef:
                 name: config
                 key: debug
+
         readinessProbe:
           httpGet:
             path: /
             port: 8000
           initialDelaySeconds: 10
           periodSeconds: 5
+
         livenessProbe:
           httpGet:
             path: /
             port: 8000
           initialDelaySeconds: 30
           periodSeconds: 10
+
+        # securityContext:
+        #   runAsNonRoot: true
+        #   runAsUser: 1000
+        #   readOnlyRootFilesystem: true
+        #   allowPrivilegeEscalation: false
