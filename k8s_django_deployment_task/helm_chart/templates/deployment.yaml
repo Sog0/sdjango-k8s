@@ -20,6 +20,12 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
 
+      volumes:
+      - name: staticfiles
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
+
       containers:
       - name: {{ include "project.name" .}}
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
@@ -69,3 +75,9 @@ spec:
               - ALL
           readOnlyRootFilesystem: true
           runAsNonRoot: true
+
+        volumeMounts:
+            - name: staticfiles
+              mountPath: /app/staticfiles
+            - name: tmp
+              mountPath: /tmp

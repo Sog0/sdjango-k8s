@@ -4,6 +4,11 @@ repositories:
   - name: bitnami
     url: https://charts.bitnami.com/bitnami
 
+hooks:
+  - events: ["prepare"]
+    showlogs: true
+    command: kubectl
+    args: ["apply", "-f", "../helm_chart/templates/ns.yaml"]
 releases:
   - name: metrics-server
     namespace: kube-system
@@ -17,6 +22,7 @@ releases:
 
   - name: django-app
     namespace: django-app
+    createNamespace: false
     chart: ../helm_chart
     values:
       - ../helm_chart/values.yaml
