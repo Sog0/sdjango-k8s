@@ -1,0 +1,29 @@
+loki:
+  enabled: true
+
+promtail:
+  enabled: true
+  config:
+    snippets:
+      extraScrapeConfigs: |
+        - job_name: audit-logs
+          static_configs:
+            - targets:
+                - localhost
+              labels:
+                job: audit-logs
+                __path__: /var/log/kubernetes/audit.log
+  extraVolumes:
+    - name: audit-logs
+      hostPath:
+        path: /var/log/kubernetes
+  extraVolumeMounts:
+    - name: audit-logs
+      mountPath: /var/log/kubernetes
+      readOnly: true
+
+grafana:
+  enabled: true
+  adminPassword: admin
+  service:
+    type: LoadBalancer

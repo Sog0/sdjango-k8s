@@ -1,25 +1,10 @@
-repositories:
-  - name: ingress-nginx
-    url: https://kubernetes.github.io/ingress-nginx
-  - name: bitnami
-    url: https://charts.bitnami.com/bitnami
-
 hooks:
   - events: ["prepare"]
     showlogs: true
     command: kubectl
     args: ["apply", "-f", "../helm_chart/templates/ns.yaml"]
+
 releases:
-  - name: metrics-server
-    namespace: kube-system
-    createNamespace: false
-    chart: bitnami/metrics-server
-
-  - name: ingress-nginx
-    namespace: ingress-nginx
-    createNamespace: true
-    chart: ingress-nginx/ingress-nginx
-
   - name: django-app
     namespace: django-app
     createNamespace: false

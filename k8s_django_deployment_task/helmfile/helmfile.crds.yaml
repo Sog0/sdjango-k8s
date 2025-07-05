@@ -1,6 +1,22 @@
+repositories:
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+
 releases:
   - name: cert-manager
     namespace: cert-manager
     chart: ../charts/cert-manager-v1.13.1.tgz
     values:
       - installCRDs: true
+      
+  - name: metrics-server
+    namespace: kube-system
+    createNamespace: false
+    chart: bitnami/metrics-server
+
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    createNamespace: true
+    chart: ingress-nginx/ingress-nginx
