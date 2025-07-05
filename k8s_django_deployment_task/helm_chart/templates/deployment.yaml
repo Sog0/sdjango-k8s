@@ -15,6 +15,11 @@ spec:
       labels: 
         app: {{ include "project.name" .}}
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+
       containers:
       - name: {{ include "project.name" .}}
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
@@ -57,8 +62,10 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
 
-        # securityContext:
-        #   runAsNonRoot: true
-        #   runAsUser: 1000
-        #   readOnlyRootFilesystem: true
-        #   allowPrivilegeEscalation: false
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true

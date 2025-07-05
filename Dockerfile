@@ -18,6 +18,8 @@ RUN pip install --upgrade pip && \
 
 FROM python:3.12-slim
 
+RUN groupadd --system appuser && useradd --system --gid appuser  --uid 1000 --create-home --shell /bin/bash appuser
+
 WORKDIR /app
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -30,6 +32,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=builder /install /usr/local
 
 COPY . .
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
 
 EXPOSE 8000
 
